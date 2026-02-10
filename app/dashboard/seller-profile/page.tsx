@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { TableSkeleton } from '@/components/table-skeleton'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 export default function SellerProfilePage() {
   const [page, setPage] = useState(1)
@@ -19,10 +20,17 @@ export default function SellerProfilePage() {
     limit,
     search,
   })
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false)
+  const [selectedSeller, setSelectedSeller] = useState<any>(null)
 
   const handleSearch = (value: string) => {
     setSearch(value)
     setPage(1)
+  }
+
+  const handleOpenDetails = (seller: any) => {
+    setSelectedSeller(seller)
+    setIsDetailsOpen(true)
   }
 
   return (
@@ -81,7 +89,12 @@ export default function SellerProfilePage() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Button variant="outline" size="sm" className="text-amber-600 border-amber-200 hover:bg-amber-50 bg-transparent">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-amber-600 border-amber-200 hover:bg-amber-50 bg-transparent"
+                          onClick={() => handleOpenDetails(seller)}
+                        >
                           See Details
                         </Button>
                       </TableCell>
@@ -106,6 +119,50 @@ export default function SellerProfilePage() {
           </div>
         )}
       </div>
+
+      <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+        <DialogContent className="max-w-xl">
+          <DialogHeader>
+            <DialogTitle>Seller Details</DialogTitle>
+          </DialogHeader>
+          {selectedSeller?.raw ? (
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <Avatar className="h-14 w-14">
+                  <AvatarImage src={selectedSeller.raw.avatar?.url || "/placeholder.svg"} />
+                  <AvatarFallback>{selectedSeller.raw.name?.substring(0, 2)}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="text-lg font-semibold text-slate-900">{selectedSeller.raw.name}</p>
+                  <p className="text-sm text-slate-500">{selectedSeller.raw.email}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-slate-500">Seller ID</p>
+                  <p className="text-slate-900 font-medium">{selectedSeller.raw._id}</p>
+                </div>
+                <div>
+                  <p className="text-slate-500">Status</p>
+                  <p className="text-slate-900 font-medium">{selectedSeller.raw.vendorStatus}</p>
+                </div>
+                <div>
+                  <p className="text-slate-500">Role</p>
+                  <p className="text-slate-900 font-medium">{selectedSeller.raw.role}</p>
+                </div>
+                <div>
+                  <p className="text-slate-500">Created</p>
+                  <p className="text-slate-900 font-medium">
+                    {new Date(selectedSeller.raw.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <p className="text-slate-500">No details available.</p>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

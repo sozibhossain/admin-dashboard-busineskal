@@ -1,15 +1,26 @@
 'use client'
 
 import { useState } from 'react'
-import { Upload, Trash2 } from 'lucide-react'
+import { Upload, Trash2, Edit } from 'lucide-react'
 import {
   useBannerAdsQuery,
   useUploadBannerMutation,
   useDeleteBannerMutation,
 } from '@/lib/hooks/queries'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
 
 export default function BannerAdsPage() {
   const [file, setFile] = useState<File | null>(null)
+  const [editFile, setEditFile] = useState<File | null>(null)
+  const [editBanner, setEditBanner] = useState<any>(null)
+  const [isEditOpen, setIsEditOpen] = useState(false)
   const { data, isLoading } = useBannerAdsQuery({ page: 1, limit: 50 })
   const uploadBanner = useUploadBannerMutation()
   const deleteBanner = useDeleteBannerMutation()
@@ -20,6 +31,25 @@ export default function BannerAdsPage() {
     formData.append('image', file)
     uploadBanner.mutate(formData, {
       onSuccess: () => setFile(null),
+    })
+  }
+
+  const handleOpenEdit = (banner: any) => {
+    setEditBanner(banner)
+    setEditFile(null)
+    setIsEditOpen(true)
+  }
+
+  const handleUpdate = async () => {
+    if (!editFile || !editBanner) return
+    const formData = new FormData()
+    formData.append('image', editFile)
+    uploadBanner.mutate(formData, {
+      onSuccess: () => {
+        deleteBanner.mutate(editBanner.id)
+        setIsEditOpen(false)
+        setEditBanner(null)
+      },
     })
   }
 
@@ -75,6 +105,12 @@ export default function BannerAdsPage() {
                     {banner.date ? new Date(banner.date).toLocaleDateString() : ''}
                   </span>
                   <button
+                    className="p-2 hover:bg-green-100 rounded-lg transition-colors"
+                    onClick={() => handleOpenEdit(banner)}
+                  >
+                    <Edit className="w-4 h-4 text-green-600" />
+                  </button>
+                  <button
                     className="p-2 hover:bg-red-100 rounded-lg transition-colors"
                     onClick={() => deleteBanner.mutate(banner.id)}
                     disabled={deleteBanner.isPending}
@@ -89,6 +125,33 @@ export default function BannerAdsPage() {
           <p className="text-slate-500">No banners found</p>
         )}
       </div>
+
+      <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Update Banner</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setEditFile(e.target.files?.[0] || null)}
+            />
+          </div>
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={() => setIsEditOpen(false)}>
+              No
+            </Button>
+            <Button
+              className="bg-amber-600 hover:bg-amber-700 text-white"
+              onClick={handleUpdate}
+              disabled={!editFile || uploadBanner.isPending}
+            >
+              Yes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

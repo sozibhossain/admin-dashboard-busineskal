@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TableSkeleton } from '@/components/table-skeleton'
 import { Card, CardContent } from '@/components/ui/card'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 export default function BuyerProfilePage() {
   const [page, setPage] = useState(1)
@@ -59,29 +60,44 @@ export default function BuyerProfilePage() {
             <Table>
               <TableHeader>
                 <TableRow className="bg-slate-50">
-                  <TableHead className="font-semibold">User ID</TableHead>
-                  <TableHead className="font-semibold">Buyer Name</TableHead>
-                  <TableHead className="font-semibold">Total Order</TableHead>
-                  <TableHead className="font-semibold">Delivered Order</TableHead>
-                  <TableHead className="font-semibold">Activity log</TableHead>
+              <TableHead className="font-semibold">User ID</TableHead>
+              <TableHead className="font-semibold">Buyer Name</TableHead>
+              <TableHead className="font-semibold">Total Order</TableHead>
+              <TableHead className="font-semibold">Delivered Order</TableHead>
+              <TableHead className="font-semibold">Activity log</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data?.data && data.data.length > 0 ? (
+              data.data.map((buyer: any) => (
+                <TableRow key={buyer.id} className="hover:bg-slate-50">
+                  <TableCell className="text-slate-600">{buyer.id}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={buyer.raw?.avatar?.url || "/placeholder.svg"} />
+                        <AvatarFallback>{buyer.name?.substring(0, 2)}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-medium text-slate-900">{buyer.name}</p>
+                        <p className="text-xs text-slate-500">{buyer.raw?.email}</p>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-slate-600">{buyer.totalOrders || '0'}</TableCell>
+                  <TableCell className="text-slate-600">{buyer.deliveredOrders || '0'}</TableCell>
+                  <TableCell>
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      buyer.status === 'Inactive'
+                        ? 'bg-slate-200 text-slate-600'
+                        : 'bg-green-100 text-green-700'
+                    }`}>
+                      {buyer.status || 'Active'}
+                    </span>
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data?.data && data.data.length > 0 ? (
-                  data.data.map((buyer: any) => (
-                    <TableRow key={buyer.id} className="hover:bg-slate-50">
-                      <TableCell className="text-slate-600">{buyer.id}</TableCell>
-                      <TableCell className="font-medium">{buyer.name}</TableCell>
-                      <TableCell className="text-slate-600">{buyer.totalOrders || '0'}</TableCell>
-                      <TableCell className="text-slate-600">{buyer.deliveredOrders || '0'}</TableCell>
-                      <TableCell>
-                        <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
-                          {buyer.status || 'Active'}
-                        </span>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
+              ))
+            ) : (
                   <TableRow>
                     <TableCell colSpan={5} className="text-center text-slate-500 py-8">
                       No buyers found
