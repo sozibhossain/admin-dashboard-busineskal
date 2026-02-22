@@ -1,13 +1,17 @@
 'use client'
 
-import React from "react"
-
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Card } from '@/components/ui/card'
+import {
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
 import { apiClient } from '@/lib/api'
 import { Lock, Loader2, ArrowLeft } from 'lucide-react'
@@ -21,8 +25,6 @@ export default function ResetPasswordPage() {
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -64,79 +66,84 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <Card className="p-8 shadow-lg">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Reset Password</h1>
-        <p className="text-gray-500 mt-2">Enter your new password below</p>
-      </div>
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+    >
+      <div className="w-full max-w-[500px]">
+        <CardHeader className="space-y-3 mb-4">
+          <CardTitle className="text-3xl font-bold text-gray-900">
+            Reset Password
+          </CardTitle>
+          <CardDescription className="text-gray-400 text-lg">
+            Enter your new password below
+          </CardDescription>
+        </CardHeader>
 
-      <form onSubmit={handleResetPassword} className="space-y-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">New Password</label>
-          <div className="relative">
-            <Lock className="absolute left-3 top-3 text-amber-500 h-5 w-5" />
-            <Input
-              type={showPassword ? 'text' : 'password'}
-              placeholder="New Password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="pl-10 border-amber-300 focus:border-amber-500"
+        <CardContent>
+          <form onSubmit={handleResetPassword} className="space-y-6">
+            <div className="space-y-3">
+              <Label htmlFor="new-password" className="text-base font-medium text-gray-900">
+                New Password
+              </Label>
+              <div className="relative">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#D99B29]" />
+                <Input
+                  id="new-password"
+                  type="password"
+                  placeholder="New Password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="h-14 pl-12 border-[#F0C478] bg-white rounded-lg focus-visible:ring-[#D99B29]"
+                  disabled={isLoading}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <Label htmlFor="confirm-password" className="text-base font-medium text-gray-900">
+                Confirm Password
+              </Label>
+              <div className="relative">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#D99B29]" />
+                <Input
+                  id="confirm-password"
+                  type="password"
+                  placeholder="Confirm Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="h-14 pl-12 border-[#F0C478] bg-white rounded-lg focus-visible:ring-[#D99B29]"
+                  disabled={isLoading}
+                />
+              </div>
+            </div>
+
+            <Button
+              type="submit"
               disabled={isLoading}
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+              className="w-full h-14 bg-[#D99B29] hover:bg-[#c08924] text-white text-lg font-medium rounded-lg transition-colors"
             >
-              {showPassword ? '🙈' : '👁️'}
-            </button>
-          </div>
-        </div>
+              {isLoading ? (
+                <span className="inline-flex items-center">
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Resetting...
+                </span>
+              ) : (
+                'Continue'
+              )}
+            </Button>
+          </form>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
-          <div className="relative">
-            <Lock className="absolute left-3 top-3 text-amber-500 h-5 w-5" />
-            <Input
-              type={showConfirmPassword ? 'text' : 'password'}
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="pl-10 border-amber-300 focus:border-amber-500"
-              disabled={isLoading}
-            />
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+          <div className="mt-6 flex justify-center">
+            <Link
+              href="/auth/login"
+              className="flex items-center text-sm font-medium text-[#D99B29] hover:underline"
             >
-              {showConfirmPassword ? '🙈' : '👁️'}
-            </button>
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Login
+            </Link>
           </div>
-        </div>
-
-        <Button
-          type="submit"
-          disabled={isLoading}
-          className="w-full bg-amber-500 hover:bg-amber-600 text-white h-12 font-semibold"
-        >
-          {isLoading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Resetting...
-            </>
-          ) : (
-            'Continue'
-          )}
-        </Button>
-      </form>
-
-      <div className="mt-6">
-        <Link href="/auth/login" className="flex items-center justify-center text-amber-500 hover:text-amber-600">
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Login
-        </Link>
+        </CardContent>
       </div>
-    </Card>
+    </div>
   )
 }

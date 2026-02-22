@@ -1,13 +1,17 @@
 'use client'
 
-import React from "react"
-
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Card } from '@/components/ui/card'
+import {
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
 import { apiClient } from '@/lib/api'
 import { Mail, Loader2, ArrowLeft } from 'lucide-react'
@@ -42,52 +46,66 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <Card className="p-8 shadow-lg">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Forgot Password</h1>
-        <p className="text-gray-500 mt-2">
-          Enter your registered email address, we'll send you a code to reset your password.
-        </p>
-      </div>
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+    >
+      <div className="w-full max-w-[500px]">
+        <CardHeader className="space-y-3 mb-4">
+          <CardTitle className="text-3xl font-bold text-gray-900">
+            Forgot Password
+          </CardTitle>
+          <CardDescription className="text-gray-400 text-lg">
+            Enter your registered email address, we&apos;ll send you a code to reset your password.
+          </CardDescription>
+        </CardHeader>
 
-      <form onSubmit={handleForgotPassword} className="space-y-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-          <div className="relative">
-            <Mail className="absolute left-3 top-3 text-amber-500 h-5 w-5" />
-            <Input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="pl-10 border-amber-300 focus:border-amber-500"
+        <CardContent>
+          <form onSubmit={handleForgotPassword} className="space-y-6">
+            <div className="space-y-3">
+              <Label htmlFor="email" className="text-base font-medium text-gray-900">
+                Email Address
+              </Label>
+              <div className="relative">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#D99B29]" />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="h-14 pl-12 border-[#F0C478] bg-white rounded-lg focus-visible:ring-[#D99B29]"
+                  disabled={isLoading}
+                />
+              </div>
+            </div>
+
+            <Button
+              type="submit"
               disabled={isLoading}
-            />
+              className="w-full h-14 bg-[#D99B29] hover:bg-[#c08924] text-white text-lg font-medium rounded-lg transition-colors"
+            >
+              {isLoading ? (
+                <span className="inline-flex items-center">
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Sending...
+                </span>
+              ) : (
+                'Send OTP'
+              )}
+            </Button>
+          </form>
+
+          <div className="mt-6 flex justify-center">
+            <Link
+              href="/auth/login"
+              className="flex items-center text-sm font-medium text-[#D99B29] hover:underline"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Login
+            </Link>
           </div>
-        </div>
-
-        <Button
-          type="submit"
-          disabled={isLoading}
-          className="w-full bg-amber-500 hover:bg-amber-600 text-white h-12 font-semibold"
-        >
-          {isLoading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Sending...
-            </>
-          ) : (
-            'Send OTP'
-          )}
-        </Button>
-      </form>
-
-      <div className="mt-6">
-        <Link href="/auth/login" className="flex items-center justify-center text-amber-500 hover:text-amber-600">
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Login
-        </Link>
+        </CardContent>
       </div>
-    </Card>
+    </div>
   )
 }

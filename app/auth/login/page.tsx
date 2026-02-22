@@ -1,16 +1,20 @@
 'use client'
 
-import React from "react"
-
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Card } from '@/components/ui/card'
+import {
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
-import { Mail, Lock, Loader2 } from 'lucide-react'
+import { Lock, Mail, Loader2 } from 'lucide-react'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -18,7 +22,6 @@ export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -51,71 +54,83 @@ export default function LoginPage() {
   }
 
   return (
-    <Card className="p-8 shadow-lg">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Login To Your Account</h1>
-        <p className="text-gray-500 mt-2">Please enter your email and password to continue</p>
-      </div>
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+      
+    >
+      <div className="w-full max-w-[500px]">
+        <CardHeader className="space-y-3 mb-4">
+          <CardTitle className="text-3xl font-bold text-gray-900">
+            Login To Your Account
+          </CardTitle>
+          <CardDescription className="text-gray-400 text-lg">
+            Please enter your email and password to continue
+          </CardDescription>
+        </CardHeader>
 
-      <form onSubmit={handleLogin} className="space-y-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-          <div className="relative">
-            <Mail className="absolute left-3 top-3 text-amber-500 h-5 w-5" />
-            <Input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="pl-10 border-amber-300 focus:border-amber-500"
-              disabled={isLoading}
-            />
-          </div>
-        </div>
+        <CardContent>
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div className="space-y-3">
+              <Label htmlFor="email" className="text-base font-medium text-gray-900">
+                Email Address
+              </Label>
+              <div className="relative">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#D99B29]" />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="h-14 pl-12 border-[#F0C478] bg-white rounded-lg focus-visible:ring-[#D99B29]"
+                  disabled={isLoading}
+                />
+              </div>
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-          <div className="relative">
-            <Lock className="absolute left-3 top-3 text-amber-500 h-5 w-5" />
-            <Input
-              type={showPassword ? 'text' : 'password'}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="pl-10 border-amber-300 focus:border-amber-500"
+            <div className="space-y-3">
+              <Label htmlFor="password" className="text-base font-medium text-gray-900">
+                Password
+              </Label>
+              <div className="relative">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#D99B29]" />
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="h-14 pl-12 border-[#F0C478] bg-white rounded-lg focus-visible:ring-[#D99B29]"
+                  disabled={isLoading}
+                />
+              </div>
+              <div className="flex justify-end">
+                <Link
+                  href="/auth/forgot-password"
+                  className="text-sm font-medium text-[#D99B29] hover:underline"
+                >
+                  Forgot Password?
+                </Link>
+              </div>
+            </div>
+
+            <Button
+              type="submit"
               disabled={isLoading}
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+              className="w-full h-14 bg-[#D99B29] hover:bg-[#c08924] text-white text-lg font-medium rounded-lg transition-colors"
             >
-              {showPassword ? '🙈' : '👁️'}
-            </button>
-          </div>
-        </div>
-
-        <div className="text-right">
-          <Link href="/auth/forgot-password" className="text-sm text-amber-500 hover:text-amber-600">
-            Forgot Password?
-          </Link>
-        </div>
-
-        <Button
-          type="submit"
-          disabled={isLoading}
-          className="w-full bg-amber-500 hover:bg-amber-600 text-white h-12 font-semibold"
-        >
-          {isLoading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Logging in...
-            </>
-          ) : (
-            'Login'
-          )}
-        </Button>
-      </form>
-    </Card>
+              {isLoading ? (
+                <span className="inline-flex items-center">
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Logging in...
+                </span>
+              ) : (
+                'Login'
+              )}
+            </Button>
+          </form>
+        </CardContent>
+      </div>
+    </div>
   )
 }
