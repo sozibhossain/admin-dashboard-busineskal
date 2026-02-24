@@ -1,15 +1,27 @@
 'use client'
-import { ChevronRight } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 
-export function DashboardHeader() {
+type DashboardHeaderProps = {
+  onMenuClick?: () => void
+}
+
+export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
   const { data: session } = useSession()
 
   return (
     <header className="w-full">
-      {/* Top Profile Bar */}
-      <div className="flex items-center justify-end bg-[rgba(223,141,16,1)] px-8 py-3">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between bg-[rgba(223,141,16,1)] px-3 py-3 sm:px-4 lg:px-8">
+        <button
+          type="button"
+          className="rounded-md p-2 text-white/90 hover:bg-white/10 md:hidden"
+          onClick={onMenuClick}
+          aria-label="Open sidebar menu"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
+
+        <div className="ml-auto flex items-center gap-2 sm:gap-3">
           <span className="text-white text-sm font-medium">
             {session?.user?.name || 'Mr. Raja'}
           </span>

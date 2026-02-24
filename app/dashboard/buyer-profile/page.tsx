@@ -28,10 +28,10 @@ export default function BuyerProfilePage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-col sm:flex-row gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Buyer Profile</h1>
+          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">Buyer Profile</h1>
           <p className="text-sm text-slate-600 mt-1">Dashboard › User Profile</p>
         </div>
-        <Card className="bg-amber-600 border-amber-600">
+        <Card className="w-full bg-amber-600 border-amber-600 sm:w-auto">
           <CardContent className="pt-6">
             <div className="text-white">
               <p className="text-sm font-medium">Total User</p>
@@ -41,14 +41,14 @@ export default function BuyerProfilePage() {
         </Card>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4 sm:p-6">
         {/* Search */}
         <div className="mb-6">
           <Input
             placeholder="Search buyers..."
             value={search}
             onChange={(e) => handleSearch(e.target.value)}
-            className="max-w-xs"
+            className="w-full sm:max-w-xs"
           />
         </div>
 
@@ -57,7 +57,7 @@ export default function BuyerProfilePage() {
           <TableSkeleton rows={5} columns={5} />
         ) : (
           <div className="overflow-x-auto">
-            <Table>
+            <Table className="min-w-[860px]">
               <TableHeader>
                 <TableRow className="bg-slate-50">
               <TableHead className="font-semibold">User ID</TableHead>

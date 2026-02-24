@@ -35,12 +35,12 @@ export default function SellerProfilePage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Seller Profile</h1>
+          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">Seller Profile</h1>
           <p className="text-sm text-slate-600 mt-1">Dashboard › Seller Profile</p>
         </div>
-        <Card className="bg-amber-600 border-amber-600">
+        <Card className="w-full bg-amber-600 border-amber-600 sm:w-auto">
           <CardContent className="pt-6">
             <div className="text-white">
               <p className="text-sm font-medium">Total Seller</p>
@@ -50,14 +50,14 @@ export default function SellerProfilePage() {
         </Card>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4 sm:p-6">
         {/* Search */}
         <div className="mb-6">
           <Input
             placeholder="Search sellers..."
             value={search}
             onChange={(e) => handleSearch(e.target.value)}
-            className="max-w-xs"
+            className="w-full sm:max-w-xs"
           />
         </div>
 
@@ -66,7 +66,7 @@ export default function SellerProfilePage() {
           <TableSkeleton rows={5} columns={3} />
         ) : (
           <div className="overflow-x-auto">
-            <Table>
+            <Table className="min-w-[640px]">
               <TableHeader>
                 <TableRow className="bg-slate-50">
                   <TableHead className="font-semibold">Seller ID</TableHead>
@@ -121,7 +121,7 @@ export default function SellerProfilePage() {
       </div>
 
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-        <DialogContent className="max-w-xl">
+        <DialogContent className="max-h-[85vh] max-w-xl overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Seller Details</DialogTitle>
           </DialogHeader>
@@ -137,7 +137,7 @@ export default function SellerProfilePage() {
                   <p className="text-sm text-slate-500">{selectedSeller.raw.email}</p>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
                 <div>
                   <p className="text-slate-500">Seller ID</p>
                   <p className="text-slate-900 font-medium">{selectedSeller.raw._id}</p>

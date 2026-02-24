@@ -87,13 +87,13 @@ export default function SubscriptionPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Subscription Plans</h1>
+          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">Subscription Plans</h1>
           <p className="text-sm text-slate-600 mt-1">Dashboard â€º Subscription</p>
         </div>
         <Button
-          className="bg-amber-600 hover:bg-amber-700 text-white"
+          className="w-full bg-amber-600 text-white hover:bg-amber-700 sm:w-auto"
           onClick={handleOpenCreate}
         >
           <Plus className="w-4 h-4 mr-2" />
@@ -103,7 +103,7 @@ export default function SubscriptionPage() {
 
       <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[900px]">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
                 <th className="px-6 py-3 text-left text-sm font-semibold text-slate-900">
@@ -152,20 +152,22 @@ export default function SubscriptionPage() {
                     <td className="px-6 py-4 text-sm text-slate-700">
                       {sub.date ? new Date(sub.date).toLocaleDateString() : '-'}
                     </td>
-                    <td className="px-6 py-4 flex gap-2">
-                      <button
-                        className="p-2 hover:bg-green-100 rounded-lg transition-colors"
-                        onClick={() => handleOpenEdit(sub)}
-                      >
-                        <Edit className="w-4 h-4 text-green-600" />
-                      </button>
-                      <button
-                        className="p-2 hover:bg-red-100 rounded-lg transition-colors"
-                        onClick={() => handleDelete(sub)}
-                        disabled={deleteSubscription.isPending}
-                      >
-                        <Trash2 className="w-4 h-4 text-red-600" />
-                      </button>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <button
+                          className="p-2 hover:bg-green-100 rounded-lg transition-colors"
+                          onClick={() => handleOpenEdit(sub)}
+                        >
+                          <Edit className="w-4 h-4 text-green-600" />
+                        </button>
+                        <button
+                          className="p-2 hover:bg-red-100 rounded-lg transition-colors"
+                          onClick={() => handleDelete(sub)}
+                          disabled={deleteSubscription.isPending}
+                        >
+                          <Trash2 className="w-4 h-4 text-red-600" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -182,7 +184,7 @@ export default function SubscriptionPage() {
       </div>
 
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent>
+        <DialogContent className="max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{selectedPlan ? 'Update Plan' : 'Add Plan'}</DialogTitle>
           </DialogHeader>

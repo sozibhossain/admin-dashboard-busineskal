@@ -14,6 +14,7 @@ import {
   CreditCard,
   Settings,
   LogOut,
+  X,
 } from "lucide-react";
 import { LogoutModal } from "./LogoutModal";
 import { signOut } from "next-auth/react";
@@ -30,7 +31,12 @@ const navigation = [
   { name: "Setting", href: "/dashboard/setting", icon: Settings },
 ];
 
-export function Sidebar() {
+type SidebarProps = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,11 +58,32 @@ export function Sidebar() {
 
   return (
     <>
-      <aside className="w-64 h-full flex flex-col text-white shrink-0 bg-[rgba(223,141,16,1)]">
-        <div className="flex flex-col items-center py-10">
+      {isOpen ? (
+        <button
+          type="button"
+          aria-label="Close sidebar"
+          className="fixed inset-0 z-40 bg-black/40 md:hidden"
+          onClick={onClose}
+        />
+      ) : null}
+
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 flex h-screen w-64 shrink-0 transform flex-col text-white transition-transform duration-300 bg-[rgba(223,141,16,1)] ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0`}
+      >
+        <div className="flex items-center justify-between px-4 py-8 md:justify-center md:px-0 md:py-10">
           <div className="relative w-28 h-12 mb-2">
             <Image src="/logo.png" alt="MANSA" fill className="object-contain" priority />
           </div>
+          <button
+            type="button"
+            className="rounded-md p-2 text-white/90 hover:bg-white/10 md:hidden"
+            onClick={onClose}
+            aria-label="Close menu"
+          >
+            <X className="h-5 w-5" />
+          </button>
         </div>
 
         <nav className="flex-1 px-4 space-y-1 overflow-y-auto">
@@ -69,6 +96,7 @@ export function Sidebar() {
                 className={`flex items-center gap-4 px-4 py-3 rounded-md transition-colors ${
                   isActive ? "bg-[#8B5704]" : "hover:bg-white/10"
                 }`}
+                onClick={onClose}
               >
                 <item.icon className="w-5 h-5 text-white" />
                 <span className="text-sm font-medium">{item.name}</span>

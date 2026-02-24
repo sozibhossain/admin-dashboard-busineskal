@@ -158,15 +158,15 @@ export default function CategoriesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between flex-col sm:flex-row gap-4">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Categories List</h1>
+          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">Categories List</h1>
           <p className="text-sm text-slate-600 mt-1">
             Dashboard › Categories › List
           </p>
         </div>
         <Button
-          className="bg-amber-600 hover:bg-amber-700 text-white"
+          className="w-full bg-amber-600 text-white hover:bg-amber-700 sm:w-auto"
           onClick={handleOpenCreate}
         >
           <Plus className="w-4 h-4 mr-2" />
@@ -174,14 +174,14 @@ export default function CategoriesPage() {
         </Button>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
         {/* Search */}
         <div className="mb-6">
           <Input
             placeholder="Search categories..."
             value={search}
             onChange={(e) => handleSearch(e.target.value)}
-            className="max-w-xs"
+            className="w-full sm:max-w-xs"
           />
         </div>
 
@@ -190,7 +190,7 @@ export default function CategoriesPage() {
           <TableSkeleton rows={5} columns={3} />
         ) : (
           <div className="overflow-x-auto">
-            <Table>
+            <Table className="min-w-[720px]">
               <TableHeader>
                 <TableRow className="bg-slate-50">
                   <TableHead className="font-semibold">Category</TableHead>
@@ -250,7 +250,7 @@ export default function CategoriesPage() {
                           <TableCell className="text-slate-600">
                             {category.date}
                           </TableCell>
-                          <TableCell className="flex gap-2">
+                          <TableCell className="flex gap-2 whitespace-nowrap">
                             <Button
                               variant="ghost"
                               size="sm"
@@ -295,7 +295,7 @@ export default function CategoriesPage() {
                               <TableCell className="text-slate-500">
                                 -
                               </TableCell>
-                              <TableCell className="flex gap-2">
+                              <TableCell className="flex gap-2 whitespace-nowrap">
                                 <Button
                                   variant="ghost"
                                   size="sm"

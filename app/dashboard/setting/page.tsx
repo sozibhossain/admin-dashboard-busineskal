@@ -112,32 +112,32 @@ export default function SettingPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">Setting</h1>
+        <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">Setting</h1>
         <p className="text-sm text-slate-600 mt-1">Dashboard › Setting</p>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-8">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4 sm:p-6 lg:p-8">
         {/* Profile Header */}
-        <div className="flex items-center gap-6 pb-8 border-b border-slate-200">
-          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-2xl font-bold">
+        <div className="flex flex-col items-start gap-4 pb-8 border-b border-slate-200 sm:flex-row sm:items-center sm:gap-6">
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-xl font-bold text-white sm:h-24 sm:w-24 sm:text-2xl">
             {user?.name?.split(' ').map((n: string) => n[0]).join('').toUpperCase() || 'U'}
           </div>
-          <div className="flex-1">
-            <h2 className="text-2xl font-bold text-slate-900">{user?.name || 'Mr. Raja'}</h2>
+          <div className="flex-1 min-w-0">
+            <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">{user?.name || 'Mr. Raja'}</h2>
             <p className="text-slate-600">@{user?.name?.toLowerCase().replace(' ', '') || 'rajuser'}</p>
             <p className="text-sm text-slate-500 mt-2">{user?.email || 'No email'}</p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
             <button
               onClick={() => setIsEditingProfile(!isEditingProfile)}
-              className="flex items-center gap-2 px-4 py-2 border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-lg font-medium transition-colors"
+              className="flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 transition-colors hover:bg-slate-50"
             >
               <Edit2 className="w-4 h-4" />
               Update Profile
             </button>
             <button
               onClick={() => setShowPasswordModal(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-medium transition-colors"
+              className="flex items-center justify-center gap-2 rounded-lg bg-amber-600 px-4 py-2 font-medium text-white transition-colors hover:bg-amber-700"
             >
               <Lock className="w-4 h-4" />
               Change Password
@@ -245,16 +245,16 @@ export default function SettingPage() {
           </div>
 
           {isEditingProfile && (
-            <div className="flex justify-end gap-4 mt-6">
+            <div className="mt-6 flex flex-col justify-end gap-3 sm:flex-row sm:gap-4">
               <button
                 onClick={() => setIsEditingProfile(false)}
-                className="px-6 py-2 border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-lg font-medium transition-colors"
+                className="rounded-lg border border-slate-300 px-6 py-2 font-medium text-slate-700 transition-colors hover:bg-slate-50"
               >
                 Cancel
               </button>
               <button
                 onClick={handleProfileUpdate}
-                className="flex items-center gap-2 px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-medium transition-colors"
+                className="flex items-center justify-center gap-2 rounded-lg bg-amber-600 px-6 py-2 font-medium text-white transition-colors hover:bg-amber-700"
               >
                 <Save className="w-4 h-4" />
                 Save Changes
@@ -267,8 +267,8 @@ export default function SettingPage() {
       {/* Change Password Modal */}
       {showPasswordModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-8">
-            <h2 className="text-2xl font-bold text-slate-900 mb-6">Change Password</h2>
+          <div className="bg-white rounded-lg shadow-lg max-h-[85vh] max-w-md w-full overflow-y-auto p-4 sm:p-6">
+            <h2 className="text-xl font-bold text-slate-900 mb-6 sm:text-2xl">Change Password</h2>
 
             <form onSubmit={handleChangePassword} className="space-y-4">
               <div>
@@ -337,7 +337,7 @@ export default function SettingPage() {
                 </div>
               </div>
 
-              <div className="flex gap-3 pt-4">
+              <div className="flex flex-col gap-3 pt-4 sm:flex-row">
                 <button
                   type="button"
                   onClick={() => setShowPasswordModal(false)}

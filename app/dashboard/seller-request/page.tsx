@@ -47,10 +47,10 @@ export default function SellerRequestPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-col sm:flex-row gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Seller Profile Request</h1>
+          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">Seller Profile Request</h1>
           <p className="text-sm text-slate-600 mt-1">Dashboard â€º Seller Profile Request</p>
         </div>
-        <div className="bg-amber-700 text-white px-4 py-3 rounded-lg shadow-sm">
+        <div className="w-full rounded-lg bg-amber-700 px-4 py-3 text-white shadow-sm sm:w-auto">
           <p className="text-xs uppercase tracking-wide">Total Request</p>
           <p className="text-lg font-semibold">{data?.total || 0}</p>
         </div>
@@ -62,7 +62,7 @@ export default function SellerRequestPage() {
             placeholder="Search sellers..."
             value={search}
             onChange={(e) => handleSearch(e.target.value)}
-            className="max-w-xs"
+            className="w-full sm:max-w-xs"
           />
         </div>
 
@@ -72,7 +72,7 @@ export default function SellerRequestPage() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full min-w-[760px]">
               <thead>
                 <tr className="border-b border-slate-200 bg-slate-50">
                   <th className="px-6 py-3 text-left text-sm font-semibold text-slate-900">
@@ -112,7 +112,8 @@ export default function SellerRequestPage() {
                       <td className="px-6 py-4 text-sm text-slate-700">
                         {request.date ? new Date(request.date).toLocaleDateString() : '-'}
                       </td>
-                      <td className="px-6 py-4 flex gap-2">
+                      <td className="px-6 py-4">
+                        <div className="flex flex-wrap items-center gap-2">
                         <span
                           className={`px-3 py-1 rounded-full text-xs font-medium ${renderStatus(
                             request.raw?.vendorStatus
@@ -143,6 +144,7 @@ export default function SellerRequestPage() {
                         <button className="p-2 hover:bg-amber-100 rounded-lg transition-colors">
                           <Trash2 className="w-4 h-4 text-amber-600" />
                         </button>
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -160,7 +162,7 @@ export default function SellerRequestPage() {
       </div>
 
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-        <DialogContent className="max-w-xl">
+        <DialogContent className="max-h-[85vh] max-w-xl overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Seller Details</DialogTitle>
           </DialogHeader>
@@ -176,7 +178,7 @@ export default function SellerRequestPage() {
                   <p className="text-sm text-slate-500">{selectedSeller.raw.email}</p>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
                 <div>
                   <p className="text-slate-500">Seller ID</p>
                   <p className="text-slate-900 font-medium">{selectedSeller.raw._id}</p>

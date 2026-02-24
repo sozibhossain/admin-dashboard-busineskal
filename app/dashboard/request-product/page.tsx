@@ -52,20 +52,20 @@ export default function RequestProductPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">Request Product</h1>
+        <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">Request Product</h1>
         <p className="text-sm text-slate-600 mt-1">
           Dashboard › Request Product › Product
         </p>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
         {/* Header */}
         <div className="mb-6">
           <Input
             placeholder="Search products..."
             value={search}
             onChange={(e) => handleSearch(e.target.value)}
-            className="max-w-xs"
+            className="w-full sm:max-w-xs"
           />
         </div>
 
@@ -74,7 +74,7 @@ export default function RequestProductPage() {
           <TableSkeleton rows={5} columns={6} />
         ) : (
           <div className="overflow-x-auto">
-            <Table>
+            <Table className="min-w-[920px]">
               <TableHeader>
                 <TableRow className="bg-slate-50">
                   <TableHead className="font-semibold">Product Name</TableHead>
@@ -115,7 +115,7 @@ export default function RequestProductPage() {
                       <TableCell className="text-slate-600">
                         {product.date}
                       </TableCell>
-                      <TableCell className="flex gap-2">
+                      <TableCell className="flex flex-wrap gap-2 whitespace-nowrap">
                         <Button
                           variant="outline"
                           size="sm"
@@ -170,13 +170,13 @@ export default function RequestProductPage() {
       </div>
 
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-h-[85vh] max-w-2xl overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Product Details</DialogTitle>
           </DialogHeader>
           {selectedProduct?.raw ? (
             <div className="space-y-4">
-              <div className="flex gap-4">
+              <div className="flex flex-col gap-4 sm:flex-row">
                 <img
                   src={
                     selectedProduct.raw.thumbnail ||
@@ -195,7 +195,7 @@ export default function RequestProductPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
                 <div>
                   <p className="text-slate-500">Price</p>
                   <p className="text-slate-900 font-medium">

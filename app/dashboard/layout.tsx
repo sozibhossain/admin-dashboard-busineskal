@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useState } from "react";
 import { Sidebar } from "@/components/Sidebar";
 import { DashboardHeader } from "@/components/DashboardHeader";
 
@@ -9,20 +10,20 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="flex h-screen overflow-hidden bg-[#F8FAFC]">
-      {/* Fixed Sidebar */}
-      <Sidebar />
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
-        <DashboardHeader />
-        
-        {/* Scrollable Body */}
+  return (
+    <div className="min-h-screen bg-[#F8FAFC]">
+      <Sidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+      />
+
+      <div className="flex min-h-screen flex-col md:ml-64">
+        <DashboardHeader onMenuClick={() => setIsSidebarOpen((prev) => !prev)} />
+
         <main className="flex-1 overflow-y-auto">
-          <div className="p-8">
-            {children}
-          </div>
+          <div className="p-3 sm:p-4 md:p-6 lg:p-8">{children}</div>
         </main>
       </div>
     </div>

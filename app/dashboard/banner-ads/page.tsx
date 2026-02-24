@@ -56,12 +56,12 @@ export default function BannerAdsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">Banner Ads</h1>
+        <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">Banner Ads</h1>
         <p className="text-sm text-slate-600 mt-1">Dashboard â€º Ads</p>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-8">
-        <div className="border-2 border-dashed border-slate-300 rounded-lg p-12 flex flex-col items-center justify-center min-h-80">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4 sm:p-6 lg:p-8">
+        <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 sm:p-12 flex flex-col items-center justify-center min-h-[16rem] sm:min-h-80">
           <Upload className="w-12 h-12 text-slate-400 mb-4" />
           <p className="text-slate-500 font-medium">Upload your banner</p>
           <input
@@ -74,7 +74,7 @@ export default function BannerAdsPage() {
 
         <div className="flex justify-end mt-6">
           <button
-            className="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded font-medium transition-colors disabled:opacity-60"
+            className="w-full sm:w-auto px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded font-medium transition-colors disabled:opacity-60"
             onClick={handleUpload}
             disabled={!file || uploadBanner.isPending}
           >
@@ -83,7 +83,7 @@ export default function BannerAdsPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4 sm:p-6">
         <h2 className="text-lg font-semibold text-slate-900 mb-4">Uploaded Banners</h2>
         {isLoading ? (
           <p className="text-slate-500">Loading...</p>
@@ -100,7 +100,7 @@ export default function BannerAdsPage() {
                     </div>
                   )}
                 </div>
-                <div className="flex items-center justify-between p-3">
+                <div className="flex flex-wrap items-center justify-between gap-2 p-3">
                   <span className="text-xs text-slate-500">
                     {banner.date ? new Date(banner.date).toLocaleDateString() : ''}
                   </span>
@@ -127,7 +127,7 @@ export default function BannerAdsPage() {
       </div>
 
       <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-        <DialogContent>
+        <DialogContent className="max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Update Banner</DialogTitle>
           </DialogHeader>
